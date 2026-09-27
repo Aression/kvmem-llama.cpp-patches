@@ -1,0 +1,495 @@
+{
+  "summary": "q5-validation-v2",
+  "supersedes": "2026-09-27-q5val-summary.json（仅 3 臂，收尾臂被守卫拒绝）",
+  "generated_hkt": "2026-09-27T07:49:06+08:00",
+  "arms": [
+    {
+      "label": "q5a_52K",
+      "dtype": "q5_0",
+      "ctx": 65536,
+      "file": "docs/experiments/2026-09-27-q5val-1-q5.json",
+      "predicted_resident_mib": 11149,
+      "adapter_before_mib": 4446.9,
+      "adapter_after_load_mib": 15163.6,
+      "adapter_peak_total_mib": 15192.5,
+      "startup_seconds": 12.0,
+      "server_sha256": "6a911c7830930106516734188b9925248fe9b78d3b99464f9f05922e0dd3424a",
+      "groups": {
+        "english": {
+          "measured_samples": 3,
+          "facts_hit": 15,
+          "facts_total": 15,
+          "prompt_tokens": [
+            51655,
+            51651,
+            51658
+          ],
+          "pp_median": 504.0,
+          "pp_range": [
+            502.9,
+            519.8
+          ],
+          "tg_median": 21.98,
+          "tg_range": [
+            21.92,
+            22.31
+          ],
+          "wall_median_s": 107.9,
+          "cache_hit_tokens": [
+            0,
+            0,
+            0
+          ],
+          "fact_seeds": [
+            4201,
+            4202,
+            4203
+          ],
+          "tool_call_emitted": null
+        },
+        "chinese": {
+          "measured_samples": 1,
+          "facts_hit": 5,
+          "facts_total": 5,
+          "prompt_tokens": [
+            51857
+          ],
+          "pp_median": 498.6,
+          "pp_range": [
+            498.6,
+            498.6
+          ],
+          "tg_median": 21.87,
+          "tg_range": [
+            21.87,
+            21.87
+          ],
+          "wall_median_s": 109.5,
+          "cache_hit_tokens": [
+            0
+          ],
+          "fact_seeds": [
+            4300
+          ],
+          "tool_call_emitted": null
+        },
+        "tool_call": {
+          "measured_samples": 1,
+          "facts_hit": 5,
+          "facts_total": 5,
+          "prompt_tokens": [
+            52040
+          ],
+          "pp_median": 500.1,
+          "pp_range": [
+            500.1,
+            500.1
+          ],
+          "tg_median": 21.71,
+          "tg_range": [
+            21.71,
+            21.71
+          ],
+          "wall_median_s": 110.9,
+          "cache_hit_tokens": [
+            0
+          ],
+          "fact_seeds": [
+            4400
+          ],
+          "tool_call_emitted": true
+        }
+      }
+    },
+    {
+      "label": "q5c_32K_open",
+      "dtype": "q5_0",
+      "ctx": 32768,
+      "file": "docs/experiments/2026-09-27-q5val-4-q5_0-32k.json",
+      "predicted_resident_mib": 10929,
+      "adapter_before_mib": 4359.6,
+      "adapter_after_load_mib": 15203.8,
+      "adapter_peak_total_mib": 15317.5,
+      "startup_seconds": 10.0,
+      "server_sha256": "6a911c7830930106516734188b9925248fe9b78d3b99464f9f05922e0dd3424a",
+      "groups": {
+        "english": {
+          "measured_samples": 3,
+          "facts_hit": 15,
+          "facts_total": 15,
+          "prompt_tokens": [
+            31849,
+            31845,
+            31852
+          ],
+          "pp_median": 589.3,
+          "pp_range": [
+            585.4,
+            594.3
+          ],
+          "tg_median": 27.88,
+          "tg_range": [
+            27.87,
+            27.97
+          ],
+          "wall_median_s": 58.5,
+          "cache_hit_tokens": [
+            0,
+            0,
+            0
+          ],
+          "fact_seeds": [
+            4201,
+            4202,
+            4203
+          ],
+          "tool_call_emitted": null
+        },
+        "chinese": {
+          "measured_samples": 1,
+          "facts_hit": 5,
+          "facts_total": 5,
+          "prompt_tokens": [
+            31967
+          ],
+          "pp_median": 581.6,
+          "pp_range": [
+            581.6,
+            581.6
+          ],
+          "tg_median": 27.79,
+          "tg_range": [
+            27.79,
+            27.79
+          ],
+          "wall_median_s": 59.2,
+          "cache_hit_tokens": [
+            0
+          ],
+          "fact_seeds": [
+            4300
+          ],
+          "tool_call_emitted": null
+        },
+        "tool_call": {
+          "measured_samples": 1,
+          "facts_hit": 5,
+          "facts_total": 5,
+          "prompt_tokens": [
+            32234
+          ],
+          "pp_median": 581.9,
+          "pp_range": [
+            581.9,
+            581.9
+          ],
+          "tg_median": 27.74,
+          "tg_range": [
+            27.74,
+            27.74
+          ],
+          "wall_median_s": 60.7,
+          "cache_hit_tokens": [
+            0
+          ],
+          "fact_seeds": [
+            4400
+          ],
+          "tool_call_emitted": true
+        }
+      }
+    },
+    {
+      "label": "q8b_32K_mid",
+      "dtype": "q8_0",
+      "ctx": 32768,
+      "file": "docs/experiments/2026-09-27-q5val-5-q8_0-32k.json",
+      "predicted_resident_mib": 11049,
+      "adapter_before_mib": 4355.6,
+      "adapter_after_load_mib": 15200.3,
+      "adapter_peak_total_mib": 15919.9,
+      "startup_seconds": 9.1,
+      "server_sha256": "6a911c7830930106516734188b9925248fe9b78d3b99464f9f05922e0dd3424a",
+      "groups": {
+        "english": {
+          "measured_samples": 3,
+          "facts_hit": 15,
+          "facts_total": 15,
+          "prompt_tokens": [
+            31849,
+            31845,
+            31852
+          ],
+          "pp_median": 407.9,
+          "pp_range": [
+            407.9,
+            553.1
+          ],
+          "tg_median": 9.51,
+          "tg_range": [
+            9.49,
+            12.65
+          ],
+          "wall_median_s": 90.2,
+          "cache_hit_tokens": [
+            0,
+            0,
+            0
+          ],
+          "fact_seeds": [
+            4201,
+            4202,
+            4203
+          ],
+          "tool_call_emitted": null
+        },
+        "chinese": {
+          "measured_samples": 1,
+          "facts_hit": 5,
+          "facts_total": 5,
+          "prompt_tokens": [
+            31967
+          ],
+          "pp_median": 402.7,
+          "pp_range": [
+            402.7,
+            402.7
+          ],
+          "tg_median": 9.49,
+          "tg_range": [
+            9.49,
+            9.49
+          ],
+          "wall_median_s": 91.6,
+          "cache_hit_tokens": [
+            0
+          ],
+          "fact_seeds": [
+            4300
+          ],
+          "tool_call_emitted": null
+        },
+        "tool_call": {
+          "measured_samples": 1,
+          "facts_hit": 5,
+          "facts_total": 5,
+          "prompt_tokens": [
+            32234
+          ],
+          "pp_median": 403.8,
+          "pp_range": [
+            403.8,
+            403.8
+          ],
+          "tg_median": 9.34,
+          "tg_range": [
+            9.34,
+            9.34
+          ],
+          "wall_median_s": 95.2,
+          "cache_hit_tokens": [
+            0
+          ],
+          "fact_seeds": [
+            4400
+          ],
+          "tool_call_emitted": true
+        }
+      }
+    },
+    {
+      "label": "q5d_32K_close",
+      "dtype": "q5_0",
+      "ctx": 32768,
+      "file": "docs/experiments/2026-09-27-q5val-9-q5-32k-closing.json",
+      "predicted_resident_mib": 10929,
+      "adapter_before_mib": 3981.2,
+      "adapter_after_load_mib": 14855.8,
+      "adapter_peak_total_mib": 14979.5,
+      "startup_seconds": 12.0,
+      "server_sha256": "6a911c7830930106516734188b9925248fe9b78d3b99464f9f05922e0dd3424a",
+      "groups": {
+        "english": {
+          "measured_samples": 3,
+          "facts_hit": 15,
+          "facts_total": 15,
+          "prompt_tokens": [
+            31849,
+            31845,
+            31852
+          ],
+          "pp_median": 601.2,
+          "pp_range": [
+            600.7,
+            613.1
+          ],
+          "tg_median": 28.66,
+          "tg_range": [
+            28.6,
+            28.7
+          ],
+          "wall_median_s": 57.1,
+          "cache_hit_tokens": [
+            0,
+            0,
+            0
+          ],
+          "fact_seeds": [
+            4201,
+            4202,
+            4203
+          ],
+          "tool_call_emitted": null
+        },
+        "chinese": {
+          "measured_samples": 1,
+          "facts_hit": 5,
+          "facts_total": 5,
+          "prompt_tokens": [
+            31967
+          ],
+          "pp_median": 595.4,
+          "pp_range": [
+            595.4,
+            595.4
+          ],
+          "tg_median": 28.59,
+          "tg_range": [
+            28.59,
+            28.59
+          ],
+          "wall_median_s": 57.8,
+          "cache_hit_tokens": [
+            0
+          ],
+          "fact_seeds": [
+            4300
+          ],
+          "tool_call_emitted": null
+        },
+        "tool_call": {
+          "measured_samples": 1,
+          "facts_hit": 5,
+          "facts_total": 5,
+          "prompt_tokens": [
+            32234
+          ],
+          "pp_median": 596.0,
+          "pp_range": [
+            596.0,
+            596.0
+          ],
+          "tg_median": 28.36,
+          "tg_range": [
+            28.36,
+            28.36
+          ],
+          "wall_median_s": 59.3,
+          "cache_hit_tokens": [
+            0
+          ],
+          "fact_seeds": [
+            4400
+          ],
+          "tool_call_emitted": true
+        }
+      }
+    }
+  ],
+  "sequence": {
+    "sequence_at_32K": [
+      "q5c(q5_0)",
+      "q8b(q8_0)",
+      "q5d(q5_0)"
+    ],
+    "complete": true,
+    "order_effect_q5c_vs_q5d": {
+      "english": {
+        "tg_median_open": 27.88,
+        "tg_median_close": 28.66,
+        "pp_median_open": 589.3,
+        "pp_median_close": 601.2,
+        "hits_open": "15/15",
+        "hits_close": "15/15"
+      },
+      "chinese": {
+        "tg_median_open": 27.79,
+        "tg_median_close": 28.59,
+        "pp_median_open": 581.6,
+        "pp_median_close": 595.4,
+        "hits_open": "5/5",
+        "hits_close": "5/5"
+      },
+      "tool_call": {
+        "tg_median_open": 27.74,
+        "tg_median_close": 28.36,
+        "pp_median_open": 581.9,
+        "pp_median_close": 596.0,
+        "hits_open": "5/5",
+        "hits_close": "5/5"
+      }
+    },
+    "q5_vs_q8_32K_tg_ratio": 3.01
+  },
+  "headline": {
+    "english_measured": "4 臂 x 3 样本 x 5 事实全部命中",
+    "chinese_and_tool": "每臂各 1 组，全部 5/5，tool_call_emitted=true",
+    "ratio": "q5 解码约为 q8 的 3.01x（32K，english 中位数，close 臂）",
+    "production_default": "q8_0 未改，q5_0 仍为候选"
+  },
+  "limitations": [
+    "重复填充材料 + 单轮问答；每配置 3 个正式样本，未覆盖多轮/代码/长链路工具任务。",
+    "52K 的 q8 对照仍不可准入（KV 按 -c 分配）；因此 32K 结论不能外推到 52K。",
+    "q8@32K 运行峰值 15919.9 MiB，仅余 384 MiB free，低于 700 MiB margin：守卫按加载期估计会低估运行期峰值。"
+  ],
+  "guard_refusals": [
+    {
+      "total_mib": 16304,
+      "adapter_resident_mib": 4359.6,
+      "margin_mib": 700,
+      "headroom_mib": 11244.4,
+      "required_mib": 11389,
+      "decision": "refuse"
+    },
+    {
+      "total_mib": 16304,
+      "adapter_resident_mib": 4981.2,
+      "margin_mib": 700,
+      "headroom_mib": 10622.8,
+      "required_mib": 10929,
+      "decision": "refuse"
+    },
+    {
+      "total_mib": 16304,
+      "adapter_resident_mib": 4981.3,
+      "margin_mib": 700,
+      "headroom_mib": 10622.7,
+      "required_mib": 10929,
+      "decision": "refuse"
+    },
+    {
+      "total_mib": 16304,
+      "adapter_resident_mib": 4981.3,
+      "margin_mib": 700,
+      "headroom_mib": 10622.7,
+      "required_mib": 10929,
+      "decision": "refuse"
+    },
+    {
+      "total_mib": 16304,
+      "adapter_resident_mib": 4981.3,
+      "margin_mib": 700,
+      "headroom_mib": 10622.7,
+      "required_mib": 10929,
+      "decision": "refuse"
+    },
+    {
+      "total_mib": 16304,
+      "adapter_resident_mib": 4981.3,
+      "margin_mib": 700,
+      "headroom_mib": 10622.7,
+      "required_mib": 10929,
+      "decision": "refuse"
+    }
+  ]
+}

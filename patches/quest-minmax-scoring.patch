@@ -1,0 +1,561 @@
+--- a/kvmem/include/kvmem/raw_kv_store.hpp
++++ b/kvmem/include/kvmem/raw_kv_store.hpp
+@@ -59,6 +59,8 @@ public:
+     void write_layer_k_gpu(uint32_t pos0, uint32_t n, uint32_t il, const uint8_t * k);
+     // Prefill mean-K only (no raw-K rows). k is token-major F32, n_embd_k per token.
+     void write_layer_mean_k(uint32_t pos0, uint32_t n, uint32_t il, const float * k);
++    // Per-dimension min/max of the same K rows (F32 input, F16 storage).
++    void write_layer_minmax_k(uint32_t pos0, uint32_t n, uint32_t il, const float * k);
+     // Decode running-sum: `sum` is already reduced over `n` tokens in one block.
+     void write_layer_mean_sum(uint32_t pos0, uint32_t n, uint32_t il, const float * sum);
+ 
+@@ -77,6 +79,8 @@ public:
+ 
+     // Normalize the stored sum by mean_tokens; absent statistics return zeros.
+     void mean_k(uint32_t block_id, uint32_t il, float * out) const;
++    // Per-dimension min/max; absent statistics return zeros.
++    void minmax_k(uint32_t block_id, uint32_t il, float * min_out, float * max_out) const;
+ 
+     size_t bytes_k() const;
+     size_t bytes_v() const;
+@@ -105,6 +109,9 @@ private:
+         std::vector<uint8_t> k_gpu;
+         std::vector<uint8_t> v_gpu;
+         std::vector<float> k_sum;
++        std::vector<uint16_t> k_min; // f16 per-dimension min (Quest-style bound scoring)
++        std::vector<uint16_t> k_max; // f16 per-dimension max
++        uint32_t minmax_tokens = 0;
+         bool k_on_nvme = false;
+         bool v_on_nvme = false;
+         bool k_gpu_fmt = false;
+@@ -126,6 +133,8 @@ private:
+     void maybe_flush_v(uint32_t block_id, uint32_t il);
+     void capture_mean_f16(LayerBlk & lb) const;
+     void add_mean_f32(LayerBlk & lb, uint32_t off, uint32_t take, const float * k);
++    void capture_minmax_f16(LayerBlk & lb) const;
++    void add_minmax_f32(LayerBlk & lb, uint32_t off, uint32_t take, const float * k);
+     bool load_k_nvme(uint32_t block_id, uint32_t il, uint8_t * dst) const;
+     bool load_v_nvme(uint32_t block_id, uint32_t il, uint16_t * dst) const;
+     bool load_v_gpu_nvme(uint32_t block_id, uint32_t il, uint8_t * dst) const;
+--- a/kvmem/src/host/raw_kv_store.cpp
++++ b/kvmem/src/host/raw_kv_store.cpp
+@@ -7,6 +7,7 @@
+ #endif
+ 
+ #include <algorithm>
++#include <cfloat>
+ #include <cstdio>
+ #include <cstring>
+ #include <chrono>
+@@ -210,6 +211,32 @@ void RawKvStore::capture_mean_f16(LayerBlk & lb) const {
+     lb.mean_tokens = nt;
+ }
+ 
++void RawKvStore::capture_minmax_f16(LayerBlk & lb) const {
++    if (!k_is_f16() || lb.k.empty() || cfg_.n_embd_k == 0) {
++        return;
++    }
++    const uint32_t nt = lb.n_tokens;
++    if (nt == 0) {
++        return;
++    }
++    const uint64_t row = k_row_bytes();
++    lb.k_min.assign(cfg_.n_embd_k, 0);
++    lb.k_max.assign(cfg_.n_embd_k, 0);
++    for (uint32_t d = 0; d < cfg_.n_embd_k; ++d) {
++        float mn = FLT_MAX, mx = -FLT_MAX;
++        for (uint32_t t = 0; t < nt; ++t) {
++            const auto * src = reinterpret_cast<const uint16_t *>(
++                    lb.k.data() + static_cast<size_t>(t) * static_cast<size_t>(row));
++            const float v = f16_to_f32(src[d]);
++            mn = std::min(mn, v);
++            mx = std::max(mx, v);
++        }
++        lb.k_min[d] = f32_to_f16(mn);
++        lb.k_max[d] = f32_to_f16(mx);
++    }
++    lb.minmax_tokens = nt;
++}
++
+ void RawKvStore::add_mean_f32(LayerBlk & lb, uint32_t off, uint32_t take,
+                               const float * k) {
+     if (!k || take == 0 || cfg_.n_embd_k == 0) {
+@@ -231,6 +258,35 @@ void RawKvStore::add_mean_f32(LayerBlk & lb, uint32_t off, uint32_t take,
+     lb.mean_tokens = nt;
+ }
+ 
++void RawKvStore::add_minmax_f32(LayerBlk & lb, uint32_t off, uint32_t take,
++                                const float * k) {
++    if (!k || take == 0 || cfg_.n_embd_k == 0) {
++        return;
++    }
++    if (lb.k_min.size() != cfg_.n_embd_k) {
++        lb.k_min.assign(cfg_.n_embd_k, 0);
++        lb.k_max.assign(cfg_.n_embd_k, 0);
++    }
++    if (off == 0) {
++        for (uint32_t d = 0; d < cfg_.n_embd_k; ++d) {
++            lb.k_min[d] = f32_to_f16(FLT_MAX);
++            lb.k_max[d] = f32_to_f16(-FLT_MAX);
++        }
++    }
++    for (uint32_t t = 0; t < take; ++t) {
++        const float * row = k + t * cfg_.n_embd_k;
++        for (uint32_t d = 0; d < cfg_.n_embd_k; ++d) {
++            const float mn = f16_to_f32(lb.k_min[d]);
++            const float mx = f16_to_f32(lb.k_max[d]);
++            const float v = row[d];
++            lb.k_min[d] = f32_to_f16(std::min(mn, v));
++            lb.k_max[d] = f32_to_f16(std::max(mx, v));
++        }
++    }
++    const uint32_t nt = off == 0 ? take : std::max(lb.minmax_tokens, off + take);
++    lb.minmax_tokens = nt;
++}
++
+ void RawKvStore::enqueue_flush(uint32_t key, std::vector<uint8_t> && data,
+                                uint64_t bytes, uint32_t block_id, uint32_t il,
+                                bool is_v) {
+@@ -260,6 +316,7 @@ void RawKvStore::maybe_flush_k(uint32_t block_id, uint32_t il) {
+     }
+     if (k_is_f16() && lb.k_sum.size() != cfg_.n_embd_k) {
+         capture_mean_f16(lb);
++        capture_minmax_f16(lb);
+     }
+     if (io_sync_inline() || !io_thread_.joinable()) {
+         const uint64_t t0 = monotonic_ns();
+@@ -548,6 +605,7 @@ void RawKvStore::write_layer_tokens_f16(uint32_t pos0, uint32_t n, uint32_t il,
+         lb.n_tokens = std::max(lb.n_tokens, off + take);
+         if (k && k_is_f16()) {
+             capture_mean_f16(lb);
++            capture_minmax_f16(lb);
+         }
+         maybe_flush_k(bid, il);
+         maybe_flush_v(bid, il);
+@@ -702,6 +760,28 @@ void RawKvStore::write_layer_mean_k(uint32_t pos0, uint32_t n, uint32_t il,
+     }
+ }
+ 
++void RawKvStore::write_layer_minmax_k(uint32_t pos0, uint32_t n, uint32_t il,
++                                      const float * k) {
++    std::unique_lock<std::mutex> lk(mu_);
++    if (!k || n == 0 || il >= cfg_.n_layer || cfg_.block_tokens == 0 ||
++        cfg_.n_embd_k == 0) {
++        return;
++    }
++    const uint32_t bt = cfg_.block_tokens;
++    uint32_t done = 0;
++    while (done < n) {
++        const uint32_t pos = pos0 + done;
++        const uint32_t bid = pos / bt;
++        const uint32_t off = pos % bt;
++        const uint32_t take = std::min(n - done, bt - off);
++        ensure_blocks(bid + 1);
++        LayerBlk & lb = blocks_[bid].layers[il];
++        add_minmax_f32(lb, off, take, k + done * cfg_.n_embd_k);
++        lb.n_tokens = std::max(lb.n_tokens, off + take);
++        done += take;
++    }
++}
++
+ void RawKvStore::write_layer_mean_sum(uint32_t pos0, uint32_t n, uint32_t il,
+                                       const float * sum) {
+     std::unique_lock<std::mutex> lk(mu_);
+@@ -1051,6 +1131,76 @@ void RawKvStore::mean_k(uint32_t block_id, uint32_t il, float * out) const {
+     }
+ }
+ 
++void RawKvStore::minmax_k(uint32_t block_id, uint32_t il, float * min_out,
++                          float * max_out) const {
++    if (!min_out || !max_out) {
++        return;
++    }
++    std::unique_lock<std::mutex> lk(mu_);
++    const auto read_stored = [&](const LayerBlk & lb) {
++        if (lb.minmax_tokens == 0 || lb.k_min.size() != cfg_.n_embd_k) {
++            return false;
++        }
++        for (uint32_t d = 0; d < cfg_.n_embd_k; ++d) {
++            min_out[d] = f16_to_f32(lb.k_min[d]);
++            max_out[d] = f16_to_f32(lb.k_max[d]);
++        }
++        return true;
++    };
++    if (block_id >= blocks_.size() || il >= cfg_.n_layer) {
++        std::fill_n(min_out, cfg_.n_embd_k, 0.0f);
++        std::fill_n(max_out, cfg_.n_embd_k, 0.0f);
++        return;
++    }
++    if (read_stored(blocks_[block_id].layers[il])) {
++        return;
++    }
++    std::fill_n(min_out, cfg_.n_embd_k, 0.0f);
++    std::fill_n(max_out, cfg_.n_embd_k, 0.0f);
++    if (!k_is_f16()) {
++        return;
++    }
++    cv_.wait(lk, [&] {
++        return block_id >= blocks_.size() || !blocks_[block_id].layers[il].k_flushing;
++    });
++    if (block_id >= blocks_.size()) {
++        return;
++    }
++    const LayerBlk & lb = blocks_[block_id].layers[il];
++    if (read_stored(lb)) {
++        return;
++    }
++    const uint32_t nt = lb.n_tokens;
++    if (nt == 0 || cfg_.n_embd_k == 0) {
++        return;
++    }
++    const uint8_t * raw = nullptr;
++    if (!lb.k.empty()) {
++        raw = lb.k.data();
++    } else if (lb.k_on_nvme) {
++        io8_.assign(static_cast<size_t>(k_slot_bytes()), 0);
++        if (!load_k_nvme(block_id, il, io8_.data())) {
++            return;
++        }
++        raw = io8_.data();
++    } else {
++        return;
++    }
++    const uint64_t row = k_row_bytes();
++    for (uint32_t d = 0; d < cfg_.n_embd_k; ++d) {
++        float mn = FLT_MAX, mx = -FLT_MAX;
++        for (uint32_t t = 0; t < nt; ++t) {
++            const auto * src = reinterpret_cast<const uint16_t *>(
++                    raw + static_cast<size_t>(t) * static_cast<size_t>(row));
++            const float v = f16_to_f32(src[d]);
++            mn = std::min(mn, v);
++            mx = std::max(mx, v);
++        }
++        min_out[d] = mn;
++        max_out[d] = mx;
++    }
++}
++
+ size_t RawKvStore::bytes_k() const {
+     std::lock_guard<std::mutex> lk(mu_);
+     size_t n = nvme_k_bytes_;
+--- a/src/adapter/llama-memory-kvmem.h
++++ b/src/adapter/llama-memory-kvmem.h
+@@ -126,11 +126,11 @@ public:
+     }
+     // Recapture Q for retrieval even while replaying a cached query span.
+     bool want_q_capture() const {
+-        return method_ == 1 && !retrieval_pinned_ && !query_frozen_ &&
++        return (method_ == 1 || method_ == 2) && !retrieval_pinned_ && !query_frozen_ &&
+             (explicit_spans_ ? !turn_spans_.query.empty() : query_begin_ >= 0);
+     }
+     bool want_decode_mean() const {
+-        return retrieval_pinned_ && method_ == 1 && !replay_;
++        return retrieval_pinned_ && (method_ == 1 || method_ == 2) && !replay_;
+     }
+     void end_prefill_capture() { prefill_capture_ = false; }
+     // Next request continues this sequence: flush decode mean, unpin
+@@ -246,6 +246,9 @@ private:
+     void copy_gpu_block_from_host(uint32_t block_id, int32_t gpu_slot,
+                                   const void * host, uint64_t bytes);
+     void score_retrieval();
++    void score_retrieval_mean(std::vector<double> & scores);
++    void score_retrieval_bound(std::vector<double> & scores);
++    static void score_top_kvmem_trace(const char * tag, const std::vector<double> & scores);
+     bool read_gpu_block(uint32_t block_id, uint32_t il, bool is_k, std::vector<float> & out) const;
+     static void kv_stats(const char * tag, const float * a, const float * b, size_t n);
+     static void tensor_to_f32_token_major(const struct ggml_tensor * t, std::vector<float> & out);
+--- a/src/adapter/llama-memory-kvmem.cpp
++++ b/src/adapter/llama-memory-kvmem.cpp
+@@ -40,6 +40,7 @@
+ #include <cstdlib>
+ #include <cstring>
+ #include <memory>
++#include <numeric>
+ #include <mutex>
+ #include <stdexcept>
+ #include <thread>
+@@ -296,7 +297,7 @@ static kvmem::KvMemRuntimeConfig make_runtime_cfg(
+     cfg.store.block_tokens = block_tokens;
+     cfg.store.select_budget = budget;
+     cfg.store.prefill_budget = budget;
+-    cfg.store.select_method = g_kvmem_params.method == 1
++    cfg.store.select_method = g_kvmem_params.method >= 1
+         ? kvmem::KvMemMethod::Retrieval
+         : kvmem::KvMemMethod::Recency;
+     cfg.store.sink_blocks = sink_tokens == 0
+@@ -594,7 +595,7 @@ llama_memory_kvmem::llama_memory_kvmem(
+             "%s: KVMem slot-pool cells=%u slots=%u block_tokens=%u budget=%u gen_reserve=%u sink_blocks=%u method=%s harvest_v=%d type_k=%s type_v=%s n_embd_k=%u attn_layers=%u%s\n",
+             __func__, kv_size_, n_slots_, block_tokens_, pool.budget, pool.gen_reserve,
+             rt_cfg.store.sink_blocks,
+-            method_ == 1 ? "retrieval" : "recency",
++            method_ == 2 ? "bound" : method_ == 1 ? "retrieval" : "recency",
+             (int) g_kvmem_params.harvest_v,
+             ggml_type_name(type_k_), ggml_type_name(type_v_),
+             n_embd_k_, kvmem_n_attn_layers(model),
+@@ -2166,6 +2167,7 @@ void llama_memory_kvmem::harvest_from_host(int il, char which, const uint8_t * h
+         }
+         if (!flat.empty()) {
+             raw_->write_layer_mean_k(pos0, n, static_cast<uint32_t>(il), flat.data());
++            raw_->write_layer_minmax_k(pos0, n, static_cast<uint32_t>(il), flat.data());
+         }
+     } else if (which == 'q') {
+         std::vector<float> flat;
+@@ -2206,6 +2208,7 @@ void llama_memory_kvmem::harvest_capture(ggml_tensor * t, int il, char which) {
+ 
+     if (which == 'k') {
+         raw_->write_layer_mean_k(pos0, n, static_cast<uint32_t>(il), flat.data());
++        raw_->write_layer_minmax_k(pos0, n, static_cast<uint32_t>(il), flat.data());
+         static bool dumped = false;
+         if (!dumped && getenv("KVMEM_DUMP_CAPTURE") && il == 0) {
+             dumped = true;
+@@ -2882,7 +2885,21 @@ void llama_memory_kvmem::copy_gpu_block_from_host(uint32_t block_id, int32_t gpu
+ void llama_memory_kvmem::score_retrieval() {
+     auto & store = runtime_->store();
+     const uint32_t nblk = store.block_count();
+-    std::vector<double> scores(nblk, 0.0);
++    std::vector<double> mean(nblk, 0.0);
++    std::vector<double> bound(nblk, 0.0);
++    score_retrieval_mean(mean);
++    score_retrieval_bound(bound);
++    std::vector<double> & chosen = method_ == 2 ? bound : mean;
++    store.set_retrieval_scores(chosen);
++    if (kvmem_diag_enabled()) {
++        score_top_kvmem_trace("mean", mean);
++        score_top_kvmem_trace("bound", bound);
++    }
++}
++
++void llama_memory_kvmem::score_retrieval_mean(std::vector<double> & scores) {
++    auto & store = runtime_->store();
++    const uint32_t nblk = store.block_count();
+     std::vector<float> mk(n_embd_k_, 0.0f);
+     const uint32_t g = n_head_kv_ == 0 ? 1 : n_head_ / n_head_kv_;
+     for (uint32_t b = 0; b < nblk; ++b) {
+@@ -2925,7 +2942,75 @@ void llama_memory_kvmem::score_retrieval() {
+         }
+         scores[b] = nlay ? acc / nlay : 0;
+     }
+-    store.set_retrieval_scores(scores);
++}
++
++void llama_memory_kvmem::score_retrieval_bound(std::vector<double> & scores) {
++    auto & store = runtime_->store();
++    const uint32_t nblk = store.block_count();
++    std::vector<float> kmin(n_embd_k_, 0.0f);
++    std::vector<float> kmax(n_embd_k_, 0.0f);
++    const uint32_t g = n_head_kv_ == 0 ? 1 : n_head_ / n_head_kv_;
++    for (uint32_t b = 0; b < nblk; ++b) {
++        if (!raw_->has_block(b)) {
++            continue;
++        }
++        double acc = 0;
++        uint32_t nlay = 0;
++        for (uint32_t il = 0; il < n_layer_; ++il) {
++            if (q_count_[il] == 0) {
++                continue;
++            }
++            raw_->minmax_k(b, il, kmin.data(), kmax.data());
++            double layer = 0;
++            const float invq = 1.0f / static_cast<float>(q_count_[il] * std::max(1u, g));
++            for (uint32_t h = 0; h < n_head_kv_; ++h) {
++                std::vector<float> qh(n_embd_head_, 0.0f);
++                for (uint32_t gi = 0; gi < g; ++gi) {
++                    const uint32_t qh_i = h * g + gi;
++                    if (qh_i >= n_head_) {
++                        break;
++                    }
++                    const float * q = q_sum_[il].data() + qh_i * n_embd_head_;
++                    for (uint32_t d = 0; d < n_embd_head_; ++d) {
++                        qh[d] += q[d];
++                    }
++                }
++                const float * kn = kmin.data() + h * n_embd_head_;
++                const float * kx = kmax.data() + h * n_embd_head_;
++                float dot = 0, nq = 0, nb = 0;
++                for (uint32_t d = 0; d < n_embd_head_; ++d) {
++                    const float qv = qh[d] * invq;
++                    const float bv = qv >= 0 ? kx[d] : kn[d];
++                    dot += qv * bv;
++                    nq += qv * qv;
++                    nb += bv * bv;
++                }
++                layer += dot / (std::sqrt(nq) * std::sqrt(nb) + 1e-6f);
++            }
++            acc += layer / static_cast<double>(std::max(1u, n_head_kv_));
++            nlay++;
++        }
++        scores[b] = nlay ? acc / nlay : 0;
++    }
++}
++
++void llama_memory_kvmem::score_top_kvmem_trace(const char * tag, const std::vector<double> & scores) {
++    if (scores.empty()) {
++        return;
++    }
++    const size_t top_n = std::min<size_t>(10, scores.size());
++    std::vector<uint32_t> idx(scores.size());
++    std::iota(idx.begin(), idx.end(), 0);
++    std::partial_sort(idx.begin(), idx.begin() + top_n, idx.end(),
++            [&](uint32_t a, uint32_t b) { return scores[a] > scores[b]; });
++    std::string out;
++    for (size_t i = 0; i < top_n; ++i) {
++        if (i) {
++            out += ',';
++        }
++        out += std::to_string(idx[i]) + ":" + std::to_string(scores[idx[i]]);
++    }
++    kvmem_diag("KVMEM_TRACE score_top %s=%s\n", tag, out.c_str());
+ }
+ 
+ void llama_memory_kvmem::retr_perf_print() {
+@@ -3064,7 +3149,7 @@ llama_kvmem_selection llama_memory_kvmem::preview_retrieval() {
+     retr_.enabled = enabled;
+     harvest_flush();
+     const int64_t t1 = ggml_time_us();
+-    if (method_ == 1) score_retrieval();
++    if (method_ == 1 || method_ == 2) score_retrieval();
+     const int64_t t2 = ggml_time_us();
+     llama_kvmem_selection selection;
+     selection.epoch = attention_epoch_;
+@@ -3603,7 +3688,7 @@ bool llama_kvmem_want_prefill_capture(void) {
+     if (!kp || !kp->enabled) {
+         return false;
+     }
+-    if (kp->method != 1 && !kp->harvest_v && getenv("KVMEM_DUMP_CAPTURE") == nullptr) {
++    if (kp->method != 1 && kp->method != 2 && !kp->harvest_v && getenv("KVMEM_DUMP_CAPTURE") == nullptr) {
+         return false;
+     }
+     llama_memory_kvmem * mem = kvmem_capture_active();
+--- a/src/adapter/llama-kvmem-capture.cpp
++++ b/src/adapter/llama-kvmem-capture.cpp
+@@ -87,7 +87,7 @@ void kvmem_capture_harvest_ubatch(struct ggml_backend_sched * sched, int is_mtp)
+ static bool ubatch_overlaps_query(uint32_t n_tokens, uint32_t n_pos, const llama_pos * pos) {
+     if (g_mem) return g_mem->query_overlaps(n_tokens, pos);
+     const llama_kvmem_params * kp = llama_kvmem_get_params();
+-    if (!kp || !kp->enabled || kp->method != 1 || kp->query_begin < 0 || n_tokens == 0) {
++    if (!kp || !kp->enabled || (kp->method != 1 && kp->method != 2) || kp->query_begin < 0 || n_tokens == 0) {
+         return false;
+     }
+     const int32_t qb = kp->query_begin;
+--- a/tools/llama-kvmem-server.cpp
++++ b/tools/llama-kvmem-server.cpp
+@@ -109,7 +109,7 @@ static void print_usage(const char * argv0) {
+             "  --kvmem-sink-tokens N      always-kept prefix; default 0 = one block; rounds down, minimum one block\n"
+             "  --kvmem-gen-reserve N      decode slack (default 256)\n"
+             "  --kvmem-recent-tokens N    always-kept newest suffix in select budget (default 0)\n"
+-            "  --kvmem-method NAME        recency | retrieval (default retrieval)\n"
++            "  --kvmem-method NAME        recency | retrieval | bound (default retrieval)\n"
+             "  --kvmem-query-last N       fallback query-last if last-user span missing (default 64)\n"
+             "  --kvmem-query-max-tokens N cap last-user retrieval query to this many tokens\n"
+             "                            from the end of the span (default 512; qw3-style)\n"
+@@ -557,7 +557,7 @@ static bool run_prefill_retrieval(ServerState & st, const std::vector<llama_toke
+     llama_context * ctx = st.ctx;
+     const int eval_end = st.spec.ok ? n_prompt - 1 : n_prompt;
+ 
+-    const bool do_retr = st.kparams.enabled && st.kparams.method == 1 && st.kparams.query_begin > 0;
++    const bool do_retr = st.kparams.enabled && st.kparams.method >= 1 && st.kparams.query_begin > 0;
+     int q0 = st.kparams.query_begin;
+     int q1 = st.kparams.query_end;
+     if (q0 < 0) {
+@@ -1677,7 +1677,8 @@ int main(int argc, char ** argv) {
+             st.kparams.recent_tokens = (uint32_t) v;
+         } else if (eq(arg, "--kvmem-method")) {
+             const char * m = need(arg);
+-            st.kparams.method = (eq(m, "retrieval") || eq(m, "retrieve")) ? 1 : 0;
++            st.kparams.method = (eq(m, "retrieval") || eq(m, "retrieve")) ? 1
++                             : (eq(m, "bound")) ? 2 : 0;
+         } else if (eq(arg, "--kvmem-query-last")) {
+             st.query_last_fallback = kvmem_cli_int(arg, need(arg));
+         } else if (eq(arg, "--kvmem-query-replay")) {
+@@ -2795,7 +2796,7 @@ int main(int argc, char ** argv) {
+             : std::string("off");
+     LOG_INF("srv    llama-kvmem-server listening on http://%s:%d  model=%s kvmem=%d method=%s n_ctx=%d spec=%s n_max=%d think=%d rbudget=%d qmax=%d\n",
+             host.c_str(), port, st.model_name.c_str(), (int) st.kparams.enabled,
+-            st.kparams.method == 1 ? "retrieval" : "recency", n_ctx,
++            st.kparams.method == 2 ? "bound" : st.kparams.method == 1 ? "retrieval" : "recency", n_ctx,
+             spec_label.c_str(), st.spec_n_max_resolved, (int) st.enable_thinking_default,
+             st.reasoning_budget_default, st.query_max_tokens);
+     if (!svr.listen_after_bind()) {
+--- a/tools/llama-kvmem-cli.cpp
++++ b/tools/llama-kvmem-cli.cpp
+@@ -434,7 +434,7 @@ int main(int argc, char ** argv) {
+         return 1;
+     }
+ 
+-    const bool do_retr = kparams.enabled && kparams.method == 1 && kparams.query_begin > 0;
++    const bool do_retr = kparams.enabled && kparams.method >= 1 && kparams.query_begin > 0;
+     const bool recr_ckpt = do_retr && llama_kvmem_has_recurrent();
+     const int prefix_end = recr_ckpt ? kparams.query_begin : eval_end;
+ 
+--- a/tools/kvmem-multimodal-server.h
++++ b/tools/kvmem-multimodal-server.h
+@@ -289,7 +289,7 @@ static bool run_prefill_multimodal(ServerState & st, StreamIo * io, int * n_cach
+         int query = std::max(base.row, std::min(st.kparams.query_begin, eval_end));
+         if (!ranges.empty()) query = std::max(query, (int) ranges.back().second);
+         query = std::min(query, eval_end);
+-        const bool retrieve = st.kparams.enabled && st.kparams.method == 1 && query < eval_end;
++        const bool retrieve = st.kparams.enabled && st.kparams.method >= 1 && query < eval_end;
+         llama_kvmem_set_request_span(query, eval_end, st.kparams.force_pos);
+         llama_kvmem_turn_spans spans;
+         spans.query = {{query, eval_end}};
+@@ -304,7 +304,7 @@ static bool run_prefill_multimodal(ServerState & st, StreamIo * io, int * n_cach
+         std::string path = "legacy", reason = "legacy_requested";
+         std::string reuse_fallback = "none";
+         bool reused_query = false;
+-        const bool imported_query = same_query && st.kparams.enabled && st.kparams.method == 1 &&
++        const bool imported_query = same_query && st.kparams.enabled && st.kparams.method >= 1 &&
+             llama_kvmem_set_query(cached_query->state);
+         if (imported_query) {
+             kvmem_scoped_ms timer(st.mm_perf.decision_ms);
+@@ -410,7 +410,7 @@ static bool run_prefill_multimodal(ServerState & st, StreamIo * io, int * n_cach
+                 if (rc != 0) throw std::runtime_error("multimodal query replay failed or cancelled");
+             }
+         }
+-        if (!reused_query && capture_user && st.kparams.enabled && st.kparams.method == 1) {
++        if (!reused_query && capture_user && st.kparams.enabled && st.kparams.method >= 1) {
+             auto saved = std::make_shared<MultimodalQuery>();
+             if (llama_kvmem_get_query(saved->state) &&
+                     *std::max_element(saved->state.count.begin(), saved->state.count.end()) == (uint32_t) (user_end - user_begin)) {
+--- a/scripts/build-hip.bat
++++ b/scripts/build-hip.bat
+@@ -37,15 +37,20 @@ if not exist "%LLAMA_DIR%\CMakeLists.txt" (
+     echo [error] llama.cpp submodule is missing. Run git submodule update --init.
+     exit /b 1
+ )
+-git -C "%LLAMA_DIR%" apply --reverse --check "%LLAMA_PATCH%" >nul 2>&1
+-if errorlevel 1 (
+-    git -C "%LLAMA_DIR%" apply --check "%LLAMA_PATCH%"
++REM SKIP_KVMEM_PATCH=1 skips replaying the upstream patch. The source tree already
++REM carries the upstream patch plus our own B2 (kvmem_capture_impl) edits, which
++REM make the reverse-apply "already applied" probe fail.
++if not defined SKIP_KVMEM_PATCH (
++    git -C "%LLAMA_DIR%" apply --reverse --check "%LLAMA_PATCH%" >nul 2>&1
+     if errorlevel 1 (
+-        echo [error] The maintained llama.cpp patch does not apply cleanly.
+-        exit /b 1
++        git -C "%LLAMA_DIR%" apply --check "%LLAMA_PATCH%"
++        if errorlevel 1 (
++            echo [error] The maintained llama.cpp patch does not apply cleanly.
++            exit /b 1
++        )
++        git -C "%LLAMA_DIR%" apply "%LLAMA_PATCH%"
++        if errorlevel 1 exit /b 1
+     )
+-    git -C "%LLAMA_DIR%" apply "%LLAMA_PATCH%"
+-    if errorlevel 1 exit /b 1
+ )
+ 
+ if "%JOBS%"=="" set "JOBS=12"
+--- a/llama.cpp/src/llama-graph.cpp
++++ b/llama.cpp/src/llama-graph.cpp
+@@ -1508,8 +1508,8 @@ static void kvmem_capture_impl(ggml_context * ctx0, ggml_cgraph * gf, ggml_tenso
+         return;
+     }
+     // Recency/identity does not need host raw-K. Skip pinning intermediates
+-    // unless retrieval is on, harvest-V is on (V only), or an explicit dump.
+-    if (kp->method != 1 && getenv("KVMEM_DUMP_CAPTURE") == nullptr) {
++    // unless retrieval or bound scoring is on, harvest-V is on (V only), or an explicit dump.
++    if (kp->method != 1 && kp->method != 2 && getenv("KVMEM_DUMP_CAPTURE") == nullptr) {
+         if (!kp->harvest_v || tag[0] != 'v') {
+             return;
+         }

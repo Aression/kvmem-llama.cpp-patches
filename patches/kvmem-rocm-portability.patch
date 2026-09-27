@@ -1,0 +1,34 @@
+--- a/src/adapter/llama-memory-kvmem.cpp
++++ b/src/adapter/llama-memory-kvmem.cpp
+@@ -24,6 +24,14 @@
+ #include "ggml-backend.h"
+ #include "ggml-backend-impl.h"
+ #include "ggml-cuda.h"
++
++// ROCm/HIP portability: the HIP CUDA-compatibility layer maps most cuda* names but not
++// this enum. Upstream master still uses the bare CUDA spelling (checked 2026-09-27), so a
++// HIP build needs the alias. Guarded on GGML_USE_HIP so CUDA builds are unaffected.
++#if defined(GGML_USE_HIP) && !defined(KVMEM_CUDA_OOM_ALIAS)
++#    define KVMEM_CUDA_OOM_ALIAS 1
++#    define cudaErrorMemoryAllocation hipErrorMemoryAllocation
++#endif
+ 
+ #include <algorithm>
+ #include <atomic>
+--- a/src/adapter/llama-memory-kvmem-mtp.cpp
++++ b/src/adapter/llama-memory-kvmem-mtp.cpp
+@@ -18,6 +18,14 @@
+ #include "ggml-backend-impl.h"
+ 
+ #include <algorithm>
++
++// ROCm/HIP portability: the HIP CUDA-compatibility layer maps most cuda* names but not
++// this enum. Upstream master still uses the bare CUDA spelling (checked 2026-09-27), so a
++// HIP build needs the alias. Guarded on GGML_USE_HIP so CUDA builds are unaffected.
++#if defined(GGML_USE_HIP) && !defined(KVMEM_CUDA_OOM_ALIAS)
++#    define KVMEM_CUDA_OOM_ALIAS 1
++#    define cudaErrorMemoryAllocation hipErrorMemoryAllocation
++#endif
+ #include <cmath>
+ #include <cstdio>
+ #include <cstdlib>

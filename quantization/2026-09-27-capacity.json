@@ -1,0 +1,1483 @@
+{
+  "timestamp_utc": "2026-09-26T18:28:51.032407+00:00",
+  "experiment": "E01-offline-capacity",
+  "limitations": [
+    "GGUF file size is a weight proxy, not measured GPU allocation.",
+    "700 MiB follows existing guard; RS and peak scratch are not separately measured.",
+    "Quantized KV quality and kernel support require GPU validation."
+  ],
+  "source_sha256": {
+    "D:\\hermes_workplace\\llama-inf\\launcher.py": "3b5718c027d1c481ca68351ac5f6231e5bed814065941c0f1b352ccf92c94837",
+    "D:\\hermes_workplace\\llama-inf\\api_models.json": "fdb684919bbb5e26d480265f36c0de4bca40580987f84bed98ab0b8becd31b85"
+  },
+  "python": "3.9.12 (main, Apr  4 2022, 05:22:27) [MSC v.1916 64 bit (AMD64)]",
+  "models": [
+    {
+      "id": "hemmingway-rco",
+      "path": "D:\\LLMs\\Altworld\\Hemmingway-1-RCO-IQ3_S-mtp.gguf",
+      "file_bytes": 12184897344,
+      "metadata": {
+        "general.architecture": "qwen35",
+        "qwen35.block_count": 65,
+        "qwen35.context_length": 262144,
+        "qwen35.embedding_length": 5120,
+        "qwen35.attention.head_count": 24,
+        "qwen35.attention.head_count_kv": 4,
+        "qwen35.attention.key_length": 256,
+        "qwen35.attention.value_length": 256
+      },
+      "kvmem": true,
+      "configured_resident_tokens": 16384,
+      "cases": [
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q8_0",
+          "kv_mib": 544.0,
+          "file_plus_kv_plus_700_mib": 12864.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q5_0",
+          "kv_mib": 352.0,
+          "file_plus_kv_plus_700_mib": 12672.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q4_0",
+          "kv_mib": 288.0,
+          "file_plus_kv_plus_700_mib": 12608.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q8_0",
+          "kv_mib": 1088.0,
+          "file_plus_kv_plus_700_mib": 13408.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q5_0",
+          "kv_mib": 704.0,
+          "file_plus_kv_plus_700_mib": 13024.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q4_0",
+          "kv_mib": 576.0,
+          "file_plus_kv_plus_700_mib": 12896.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q8_0",
+          "kv_mib": 2176.0,
+          "file_plus_kv_plus_700_mib": 14496.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q5_0",
+          "kv_mib": 1408.0,
+          "file_plus_kv_plus_700_mib": 13728.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q4_0",
+          "kv_mib": 1152.0,
+          "file_plus_kv_plus_700_mib": 13472.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q8_0",
+          "kv_mib": 4352.0,
+          "file_plus_kv_plus_700_mib": 16672.42364501953,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q5_0",
+          "kv_mib": 2816.0,
+          "file_plus_kv_plus_700_mib": 15136.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q4_0",
+          "kv_mib": 2304.0,
+          "file_plus_kv_plus_700_mib": 14624.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        }
+      ]
+    },
+    {
+      "id": "moe35b-a3b",
+      "path": "D:\\LLMs\\IsValorum\\Qwen3.8-35B-A3B-Distill-MTP-APEX\\Qwen3.8-35B-A3B-Distill.APEX-I-MiniPlus-V2.1-Abliterated.gguf",
+      "file_bytes": 14658690144,
+      "metadata": {
+        "general.architecture": "qwen35moe",
+        "qwen35moe.block_count": 40,
+        "qwen35moe.context_length": 262144,
+        "qwen35moe.embedding_length": 2048,
+        "qwen35moe.attention.head_count": 16,
+        "qwen35moe.attention.head_count_kv": 2,
+        "qwen35moe.attention.key_length": 256,
+        "qwen35moe.attention.value_length": 256
+      },
+      "kvmem": true,
+      "configured_resident_tokens": 16384,
+      "cases": [
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q8_0",
+          "kv_mib": 170.0,
+          "file_plus_kv_plus_700_mib": 14849.616302490234,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q5_0",
+          "kv_mib": 110.0,
+          "file_plus_kv_plus_700_mib": 14789.616302490234,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q4_0",
+          "kv_mib": 90.0,
+          "file_plus_kv_plus_700_mib": 14769.616302490234,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q8_0",
+          "kv_mib": 340.0,
+          "file_plus_kv_plus_700_mib": 15019.616302490234,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q5_0",
+          "kv_mib": 220.0,
+          "file_plus_kv_plus_700_mib": 14899.616302490234,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q4_0",
+          "kv_mib": 180.0,
+          "file_plus_kv_plus_700_mib": 14859.616302490234,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q8_0",
+          "kv_mib": 680.0,
+          "file_plus_kv_plus_700_mib": 15359.616302490234,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q5_0",
+          "kv_mib": 440.0,
+          "file_plus_kv_plus_700_mib": 15119.616302490234,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q4_0",
+          "kv_mib": 360.0,
+          "file_plus_kv_plus_700_mib": 15039.616302490234,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q8_0",
+          "kv_mib": 1360.0,
+          "file_plus_kv_plus_700_mib": 16039.616302490234,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q5_0",
+          "kv_mib": 880.0,
+          "file_plus_kv_plus_700_mib": 15559.616302490234,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q4_0",
+          "kv_mib": 720.0,
+          "file_plus_kv_plus_700_mib": 15399.616302490234,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        }
+      ]
+    },
+    {
+      "id": "moe35b-hauhau",
+      "path": "D:\\LLMs\\HauhauCS\\Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive\\Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive-IQ3_M.gguf",
+      "file_bytes": 15440519296,
+      "metadata": {
+        "general.architecture": "qwen35moe",
+        "qwen35moe.block_count": 40,
+        "qwen35moe.context_length": 262144,
+        "qwen35moe.embedding_length": 2048,
+        "qwen35moe.attention.head_count": 16,
+        "qwen35moe.attention.head_count_kv": 2,
+        "qwen35moe.attention.key_length": 256,
+        "qwen35moe.attention.value_length": 256
+      },
+      "kvmem": true,
+      "configured_resident_tokens": 16384,
+      "cases": [
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q8_0",
+          "kv_mib": 170.0,
+          "file_plus_kv_plus_700_mib": 15595.226684570312,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q5_0",
+          "kv_mib": 110.0,
+          "file_plus_kv_plus_700_mib": 15535.226684570312,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q4_0",
+          "kv_mib": 90.0,
+          "file_plus_kv_plus_700_mib": 15515.226684570312,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q8_0",
+          "kv_mib": 340.0,
+          "file_plus_kv_plus_700_mib": 15765.226684570312,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q5_0",
+          "kv_mib": 220.0,
+          "file_plus_kv_plus_700_mib": 15645.226684570312,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q4_0",
+          "kv_mib": 180.0,
+          "file_plus_kv_plus_700_mib": 15605.226684570312,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q8_0",
+          "kv_mib": 680.0,
+          "file_plus_kv_plus_700_mib": 16105.226684570312,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q5_0",
+          "kv_mib": 440.0,
+          "file_plus_kv_plus_700_mib": 15865.226684570312,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q4_0",
+          "kv_mib": 360.0,
+          "file_plus_kv_plus_700_mib": 15785.226684570312,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q8_0",
+          "kv_mib": 1360.0,
+          "file_plus_kv_plus_700_mib": 16785.226684570312,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q5_0",
+          "kv_mib": 880.0,
+          "file_plus_kv_plus_700_mib": 16305.226684570312,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q4_0",
+          "kv_mib": 720.0,
+          "file_plus_kv_plus_700_mib": 16145.226684570312,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        }
+      ]
+    },
+    {
+      "id": "occamy-agent",
+      "path": "D:\\LLMs\\Accio-Lab\\occamy-1.0-GGUF\\occamy-1.0-IQ3_XS.gguf",
+      "file_bytes": 14484144128,
+      "metadata": {
+        "general.architecture": "qwen35moe",
+        "qwen35moe.block_count": 40,
+        "qwen35moe.context_length": 262144,
+        "qwen35moe.embedding_length": 2048,
+        "qwen35moe.attention.head_count": 16,
+        "qwen35moe.attention.head_count_kv": 2,
+        "qwen35moe.attention.key_length": 256,
+        "qwen35moe.attention.value_length": 256
+      },
+      "kvmem": true,
+      "configured_resident_tokens": 16384,
+      "cases": [
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q8_0",
+          "kv_mib": 170.0,
+          "file_plus_kv_plus_700_mib": 14683.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q5_0",
+          "kv_mib": 110.0,
+          "file_plus_kv_plus_700_mib": 14623.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q4_0",
+          "kv_mib": 90.0,
+          "file_plus_kv_plus_700_mib": 14603.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q8_0",
+          "kv_mib": 340.0,
+          "file_plus_kv_plus_700_mib": 14853.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q5_0",
+          "kv_mib": 220.0,
+          "file_plus_kv_plus_700_mib": 14733.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q4_0",
+          "kv_mib": 180.0,
+          "file_plus_kv_plus_700_mib": 14693.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q8_0",
+          "kv_mib": 680.0,
+          "file_plus_kv_plus_700_mib": 15193.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q5_0",
+          "kv_mib": 440.0,
+          "file_plus_kv_plus_700_mib": 14953.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q4_0",
+          "kv_mib": 360.0,
+          "file_plus_kv_plus_700_mib": 14873.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q8_0",
+          "kv_mib": 1360.0,
+          "file_plus_kv_plus_700_mib": 15873.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q5_0",
+          "kv_mib": 880.0,
+          "file_plus_kv_plus_700_mib": 15393.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q4_0",
+          "kv_mib": 720.0,
+          "file_plus_kv_plus_700_mib": 15233.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        }
+      ]
+    },
+    {
+      "id": "occamy-agent-long",
+      "path": "D:\\LLMs\\Accio-Lab\\occamy-1.0-GGUF\\occamy-1.0-IQ3_XS.gguf",
+      "file_bytes": 14484144128,
+      "metadata": {
+        "general.architecture": "qwen35moe",
+        "qwen35moe.block_count": 40,
+        "qwen35moe.context_length": 262144,
+        "qwen35moe.embedding_length": 2048,
+        "qwen35moe.attention.head_count": 16,
+        "qwen35moe.attention.head_count_kv": 2,
+        "qwen35moe.attention.key_length": 256,
+        "qwen35moe.attention.value_length": 256
+      },
+      "kvmem": false,
+      "configured_resident_tokens": 65536,
+      "cases": [
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q8_0",
+          "kv_mib": 340.0,
+          "file_plus_kv_plus_700_mib": 14853.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q5_0",
+          "kv_mib": 220.0,
+          "file_plus_kv_plus_700_mib": 14733.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q4_0",
+          "kv_mib": 180.0,
+          "file_plus_kv_plus_700_mib": 14693.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q8_0",
+          "kv_mib": 680.0,
+          "file_plus_kv_plus_700_mib": 15193.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q5_0",
+          "kv_mib": 440.0,
+          "file_plus_kv_plus_700_mib": 14953.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q4_0",
+          "kv_mib": 360.0,
+          "file_plus_kv_plus_700_mib": 14873.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q8_0",
+          "kv_mib": 1360.0,
+          "file_plus_kv_plus_700_mib": 15873.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q5_0",
+          "kv_mib": 880.0,
+          "file_plus_kv_plus_700_mib": 15393.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q4_0",
+          "kv_mib": 720.0,
+          "file_plus_kv_plus_700_mib": 15233.15625,
+          "note": "qwen35moe: 仅 10/40 层带 KV 缓存"
+        }
+      ]
+    },
+    {
+      "id": "heretic-rco",
+      "path": "D:\\LLMs\\0bserverx\\Qwen3.8-27B-Heretic-GSQ-RCO-GGUF\\RVN-Qwen3.8-27B-Heretic-GSQ-RCO-IQ3_S-mtp.gguf",
+      "file_bytes": 12246459840,
+      "metadata": {
+        "general.architecture": "qwen35",
+        "qwen35.block_count": 65,
+        "qwen35.context_length": 262144,
+        "qwen35.embedding_length": 5120,
+        "qwen35.attention.head_count": 24,
+        "qwen35.attention.head_count_kv": 4,
+        "qwen35.attention.key_length": 256,
+        "qwen35.attention.value_length": 256
+      },
+      "kvmem": true,
+      "configured_resident_tokens": 16384,
+      "cases": [
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q8_0",
+          "kv_mib": 544.0,
+          "file_plus_kv_plus_700_mib": 12923.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q5_0",
+          "kv_mib": 352.0,
+          "file_plus_kv_plus_700_mib": 12731.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q4_0",
+          "kv_mib": 288.0,
+          "file_plus_kv_plus_700_mib": 12667.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q8_0",
+          "kv_mib": 1088.0,
+          "file_plus_kv_plus_700_mib": 13467.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q5_0",
+          "kv_mib": 704.0,
+          "file_plus_kv_plus_700_mib": 13083.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q4_0",
+          "kv_mib": 576.0,
+          "file_plus_kv_plus_700_mib": 12955.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q8_0",
+          "kv_mib": 2176.0,
+          "file_plus_kv_plus_700_mib": 14555.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q5_0",
+          "kv_mib": 1408.0,
+          "file_plus_kv_plus_700_mib": 13787.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q4_0",
+          "kv_mib": 1152.0,
+          "file_plus_kv_plus_700_mib": 13531.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q8_0",
+          "kv_mib": 4352.0,
+          "file_plus_kv_plus_700_mib": 16731.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q5_0",
+          "kv_mib": 2816.0,
+          "file_plus_kv_plus_700_mib": 15195.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q4_0",
+          "kv_mib": 2304.0,
+          "file_plus_kv_plus_700_mib": 14683.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        }
+      ]
+    },
+    {
+      "id": "hemmingway-rco-long",
+      "path": "D:\\LLMs\\Altworld\\Hemmingway-1-RCO-IQ3_S-mtp.gguf",
+      "file_bytes": 12184897344,
+      "metadata": {
+        "general.architecture": "qwen35",
+        "qwen35.block_count": 65,
+        "qwen35.context_length": 262144,
+        "qwen35.embedding_length": 5120,
+        "qwen35.attention.head_count": 24,
+        "qwen35.attention.head_count_kv": 4,
+        "qwen35.attention.key_length": 256,
+        "qwen35.attention.value_length": 256
+      },
+      "kvmem": true,
+      "configured_resident_tokens": 24576,
+      "cases": [
+        {
+          "resident_tokens": 24576,
+          "kv_type": "q8_0",
+          "kv_mib": 816.0,
+          "file_plus_kv_plus_700_mib": 13136.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 24576,
+          "kv_type": "q5_0",
+          "kv_mib": 528.0,
+          "file_plus_kv_plus_700_mib": 12848.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 24576,
+          "kv_type": "q4_0",
+          "kv_mib": 432.0,
+          "file_plus_kv_plus_700_mib": 12752.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q8_0",
+          "kv_mib": 1088.0,
+          "file_plus_kv_plus_700_mib": 13408.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q5_0",
+          "kv_mib": 704.0,
+          "file_plus_kv_plus_700_mib": 13024.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q4_0",
+          "kv_mib": 576.0,
+          "file_plus_kv_plus_700_mib": 12896.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q8_0",
+          "kv_mib": 2176.0,
+          "file_plus_kv_plus_700_mib": 14496.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q5_0",
+          "kv_mib": 1408.0,
+          "file_plus_kv_plus_700_mib": 13728.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q4_0",
+          "kv_mib": 1152.0,
+          "file_plus_kv_plus_700_mib": 13472.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q8_0",
+          "kv_mib": 4352.0,
+          "file_plus_kv_plus_700_mib": 16672.42364501953,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q5_0",
+          "kv_mib": 2816.0,
+          "file_plus_kv_plus_700_mib": 15136.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q4_0",
+          "kv_mib": 2304.0,
+          "file_plus_kv_plus_700_mib": 14624.423645019531,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        }
+      ]
+    },
+    {
+      "id": "heretic-rco-mtp",
+      "path": "D:\\LLMs\\0bserverx\\Qwen3.8-27B-Heretic-GSQ-RCO-GGUF\\RVN-Qwen3.8-27B-Heretic-GSQ-RCO-IQ3_S-mtp.gguf",
+      "file_bytes": 12246459840,
+      "metadata": {
+        "general.architecture": "qwen35",
+        "qwen35.block_count": 65,
+        "qwen35.context_length": 262144,
+        "qwen35.embedding_length": 5120,
+        "qwen35.attention.head_count": 24,
+        "qwen35.attention.head_count_kv": 4,
+        "qwen35.attention.key_length": 256,
+        "qwen35.attention.value_length": 256
+      },
+      "kvmem": true,
+      "configured_resident_tokens": 16384,
+      "cases": [
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q8_0",
+          "kv_mib": 544.0,
+          "file_plus_kv_plus_700_mib": 12923.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q5_0",
+          "kv_mib": 352.0,
+          "file_plus_kv_plus_700_mib": 12731.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q4_0",
+          "kv_mib": 288.0,
+          "file_plus_kv_plus_700_mib": 12667.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q8_0",
+          "kv_mib": 1088.0,
+          "file_plus_kv_plus_700_mib": 13467.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q5_0",
+          "kv_mib": 704.0,
+          "file_plus_kv_plus_700_mib": 13083.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q4_0",
+          "kv_mib": 576.0,
+          "file_plus_kv_plus_700_mib": 12955.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q8_0",
+          "kv_mib": 2176.0,
+          "file_plus_kv_plus_700_mib": 14555.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q5_0",
+          "kv_mib": 1408.0,
+          "file_plus_kv_plus_700_mib": 13787.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q4_0",
+          "kv_mib": 1152.0,
+          "file_plus_kv_plus_700_mib": 13531.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q8_0",
+          "kv_mib": 4352.0,
+          "file_plus_kv_plus_700_mib": 16731.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q5_0",
+          "kv_mib": 2816.0,
+          "file_plus_kv_plus_700_mib": 15195.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q4_0",
+          "kv_mib": 2304.0,
+          "file_plus_kv_plus_700_mib": 14683.134216308594,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        }
+      ]
+    },
+    {
+      "id": "ista-rco",
+      "path": "D:\\LLMs\\ISTA-DASLab\\Qwen3.8-27B-GSQ-RCO-GGUF\\Qwen3.8-27B-GSQ-RCO-IQ3_S-mtp.gguf",
+      "file_bytes": 12120016960,
+      "metadata": {
+        "general.architecture": "qwen35",
+        "qwen35.block_count": 65,
+        "qwen35.context_length": 262144,
+        "qwen35.embedding_length": 5120,
+        "qwen35.attention.head_count": 24,
+        "qwen35.attention.head_count_kv": 4,
+        "qwen35.attention.key_length": 256,
+        "qwen35.attention.value_length": 256
+      },
+      "kvmem": true,
+      "configured_resident_tokens": 16384,
+      "cases": [
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q8_0",
+          "kv_mib": 544.0,
+          "file_plus_kv_plus_700_mib": 12802.548889160156,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q5_0",
+          "kv_mib": 352.0,
+          "file_plus_kv_plus_700_mib": 12610.548889160156,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q4_0",
+          "kv_mib": 288.0,
+          "file_plus_kv_plus_700_mib": 12546.548889160156,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q8_0",
+          "kv_mib": 1088.0,
+          "file_plus_kv_plus_700_mib": 13346.548889160156,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q5_0",
+          "kv_mib": 704.0,
+          "file_plus_kv_plus_700_mib": 12962.548889160156,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q4_0",
+          "kv_mib": 576.0,
+          "file_plus_kv_plus_700_mib": 12834.548889160156,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q8_0",
+          "kv_mib": 2176.0,
+          "file_plus_kv_plus_700_mib": 14434.548889160156,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q5_0",
+          "kv_mib": 1408.0,
+          "file_plus_kv_plus_700_mib": 13666.548889160156,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q4_0",
+          "kv_mib": 1152.0,
+          "file_plus_kv_plus_700_mib": 13410.548889160156,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q8_0",
+          "kv_mib": 4352.0,
+          "file_plus_kv_plus_700_mib": 16610.548889160156,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q5_0",
+          "kv_mib": 2816.0,
+          "file_plus_kv_plus_700_mib": 15074.548889160156,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q4_0",
+          "kv_mib": 2304.0,
+          "file_plus_kv_plus_700_mib": 14562.548889160156,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        }
+      ]
+    },
+    {
+      "id": "hemmingway-abliterated",
+      "path": "D:\\LLMs\\markldn\\Hemmingway-1-Abliterated-RCO-IQ3_S-mtp.gguf",
+      "file_bytes": 12184897024,
+      "metadata": {
+        "general.architecture": "qwen35",
+        "qwen35.block_count": 65,
+        "qwen35.context_length": 262144,
+        "qwen35.embedding_length": 5120,
+        "qwen35.attention.head_count": 24,
+        "qwen35.attention.head_count_kv": 4,
+        "qwen35.attention.key_length": 256,
+        "qwen35.attention.value_length": 256
+      },
+      "kvmem": true,
+      "configured_resident_tokens": 16384,
+      "cases": [
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q8_0",
+          "kv_mib": 544.0,
+          "file_plus_kv_plus_700_mib": 12864.42333984375,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q5_0",
+          "kv_mib": 352.0,
+          "file_plus_kv_plus_700_mib": 12672.42333984375,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q4_0",
+          "kv_mib": 288.0,
+          "file_plus_kv_plus_700_mib": 12608.42333984375,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q8_0",
+          "kv_mib": 1088.0,
+          "file_plus_kv_plus_700_mib": 13408.42333984375,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q5_0",
+          "kv_mib": 704.0,
+          "file_plus_kv_plus_700_mib": 13024.42333984375,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q4_0",
+          "kv_mib": 576.0,
+          "file_plus_kv_plus_700_mib": 12896.42333984375,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q8_0",
+          "kv_mib": 2176.0,
+          "file_plus_kv_plus_700_mib": 14496.42333984375,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q5_0",
+          "kv_mib": 1408.0,
+          "file_plus_kv_plus_700_mib": 13728.42333984375,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q4_0",
+          "kv_mib": 1152.0,
+          "file_plus_kv_plus_700_mib": 13472.42333984375,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q8_0",
+          "kv_mib": 4352.0,
+          "file_plus_kv_plus_700_mib": 16672.42333984375,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q5_0",
+          "kv_mib": 2816.0,
+          "file_plus_kv_plus_700_mib": 15136.42333984375,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q4_0",
+          "kv_mib": 2304.0,
+          "file_plus_kv_plus_700_mib": 14624.42333984375,
+          "note": "qwen35: 仅 16/65 层带 KV 缓存"
+        }
+      ]
+    },
+    {
+      "id": "hemmingway-heretic-q3",
+      "path": "D:\\LLMs\\mradermacher\\Hemmingway-1-Uncensored-Heretic-GGUF\\Hemmingway-1-Uncensored-Heretic.Q3_K_L.gguf",
+      "file_bytes": 14344777024,
+      "metadata": {
+        "general.architecture": "qwen35",
+        "qwen35.block_count": 64,
+        "qwen35.context_length": 262144,
+        "qwen35.embedding_length": 5120,
+        "qwen35.attention.head_count": 24,
+        "qwen35.attention.head_count_kv": 4,
+        "qwen35.attention.key_length": 256,
+        "qwen35.attention.value_length": 256
+      },
+      "kvmem": true,
+      "configured_resident_tokens": 16384,
+      "cases": [
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q8_0",
+          "kv_mib": 544.0,
+          "file_plus_kv_plus_700_mib": 14924.245422363281,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q5_0",
+          "kv_mib": 352.0,
+          "file_plus_kv_plus_700_mib": 14732.245422363281,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q4_0",
+          "kv_mib": 288.0,
+          "file_plus_kv_plus_700_mib": 14668.245422363281,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q8_0",
+          "kv_mib": 1088.0,
+          "file_plus_kv_plus_700_mib": 15468.245422363281,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q5_0",
+          "kv_mib": 704.0,
+          "file_plus_kv_plus_700_mib": 15084.245422363281,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q4_0",
+          "kv_mib": 576.0,
+          "file_plus_kv_plus_700_mib": 14956.245422363281,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q8_0",
+          "kv_mib": 2176.0,
+          "file_plus_kv_plus_700_mib": 16556.24542236328,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q5_0",
+          "kv_mib": 1408.0,
+          "file_plus_kv_plus_700_mib": 15788.245422363281,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q4_0",
+          "kv_mib": 1152.0,
+          "file_plus_kv_plus_700_mib": 15532.245422363281,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q8_0",
+          "kv_mib": 4352.0,
+          "file_plus_kv_plus_700_mib": 18732.24542236328,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q5_0",
+          "kv_mib": 2816.0,
+          "file_plus_kv_plus_700_mib": 17196.24542236328,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q4_0",
+          "kv_mib": 2304.0,
+          "file_plus_kv_plus_700_mib": 16684.24542236328,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        }
+      ]
+    },
+    {
+      "id": "writer-v2-q3",
+      "path": "D:\\LLMs\\llmfan46\\Qwen3.5-27B-Writer-V2-uncensored-heretic-GGUF\\Qwen3.5-27B-Writer-V2-uncensored-heretic-Q3_K_L.gguf",
+      "file_bytes": 14344774912,
+      "metadata": {
+        "general.architecture": "qwen35",
+        "qwen35.block_count": 64,
+        "qwen35.context_length": 262144,
+        "qwen35.embedding_length": 5120,
+        "qwen35.attention.head_count": 24,
+        "qwen35.attention.head_count_kv": 4,
+        "qwen35.attention.key_length": 256,
+        "qwen35.attention.value_length": 256
+      },
+      "kvmem": true,
+      "configured_resident_tokens": 16384,
+      "cases": [
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q8_0",
+          "kv_mib": 544.0,
+          "file_plus_kv_plus_700_mib": 14924.243408203125,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q5_0",
+          "kv_mib": 352.0,
+          "file_plus_kv_plus_700_mib": 14732.243408203125,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q4_0",
+          "kv_mib": 288.0,
+          "file_plus_kv_plus_700_mib": 14668.243408203125,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q8_0",
+          "kv_mib": 1088.0,
+          "file_plus_kv_plus_700_mib": 15468.243408203125,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q5_0",
+          "kv_mib": 704.0,
+          "file_plus_kv_plus_700_mib": 15084.243408203125,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q4_0",
+          "kv_mib": 576.0,
+          "file_plus_kv_plus_700_mib": 14956.243408203125,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q8_0",
+          "kv_mib": 2176.0,
+          "file_plus_kv_plus_700_mib": 16556.243408203125,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q5_0",
+          "kv_mib": 1408.0,
+          "file_plus_kv_plus_700_mib": 15788.243408203125,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q4_0",
+          "kv_mib": 1152.0,
+          "file_plus_kv_plus_700_mib": 15532.243408203125,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q8_0",
+          "kv_mib": 4352.0,
+          "file_plus_kv_plus_700_mib": 18732.243408203125,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q5_0",
+          "kv_mib": 2816.0,
+          "file_plus_kv_plus_700_mib": 17196.243408203125,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q4_0",
+          "kv_mib": 2304.0,
+          "file_plus_kv_plus_700_mib": 16684.243408203125,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        }
+      ]
+    },
+    {
+      "id": "webnovel-zh-q3",
+      "path": "D:\\LLMs\\mradermacher\\Qwen3.5-27B-WebNovel-Writer-zh-i1-GGUF\\Qwen3.5-27B-WebNovel-Writer-zh.i1-Q3_K_L.gguf",
+      "file_bytes": 14344768608,
+      "metadata": {
+        "general.architecture": "qwen35",
+        "qwen35.block_count": 64,
+        "qwen35.context_length": 262144,
+        "qwen35.embedding_length": 5120,
+        "qwen35.attention.head_count": 24,
+        "qwen35.attention.head_count_kv": 4,
+        "qwen35.attention.key_length": 256,
+        "qwen35.attention.value_length": 256
+      },
+      "kvmem": true,
+      "configured_resident_tokens": 16384,
+      "cases": [
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q8_0",
+          "kv_mib": 544.0,
+          "file_plus_kv_plus_700_mib": 14924.237396240234,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q5_0",
+          "kv_mib": 352.0,
+          "file_plus_kv_plus_700_mib": 14732.237396240234,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 16384,
+          "kv_type": "q4_0",
+          "kv_mib": 288.0,
+          "file_plus_kv_plus_700_mib": 14668.237396240234,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q8_0",
+          "kv_mib": 1088.0,
+          "file_plus_kv_plus_700_mib": 15468.237396240234,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q5_0",
+          "kv_mib": 704.0,
+          "file_plus_kv_plus_700_mib": 15084.237396240234,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q4_0",
+          "kv_mib": 576.0,
+          "file_plus_kv_plus_700_mib": 14956.237396240234,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q8_0",
+          "kv_mib": 2176.0,
+          "file_plus_kv_plus_700_mib": 16556.237396240234,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q5_0",
+          "kv_mib": 1408.0,
+          "file_plus_kv_plus_700_mib": 15788.237396240234,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q4_0",
+          "kv_mib": 1152.0,
+          "file_plus_kv_plus_700_mib": 15532.237396240234,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q8_0",
+          "kv_mib": 4352.0,
+          "file_plus_kv_plus_700_mib": 18732.237396240234,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q5_0",
+          "kv_mib": 2816.0,
+          "file_plus_kv_plus_700_mib": 17196.237396240234,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q4_0",
+          "kv_mib": 2304.0,
+          "file_plus_kv_plus_700_mib": 16684.237396240234,
+          "note": "qwen35: 仅 16/64 层带 KV 缓存"
+        }
+      ]
+    },
+    {
+      "id": "gemma4-styletune",
+      "path": "D:\\LLMs\\mradermacher\\Gemma-4-26B-A4B-StyleTune-QK-Heretic-GGUF\\Gemma-4-26B-A4B-StyleTune-QK-Heretic.IQ4_XS.gguf",
+      "file_bytes": 14455979552,
+      "metadata": {
+        "general.architecture": "gemma4",
+        "gemma4.block_count": 30,
+        "gemma4.context_length": 262144,
+        "gemma4.embedding_length": 2816,
+        "gemma4.attention.head_count": 16,
+        "gemma4.attention.head_count_kv": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          2,
+          8,
+          8,
+          8,
+          8,
+          8,
+          2,
+          8,
+          8,
+          8,
+          8,
+          8,
+          2,
+          8,
+          8,
+          8,
+          8,
+          8,
+          2,
+          8,
+          8,
+          8,
+          8,
+          8,
+          2
+        ],
+        "gemma4.attention.key_length": 512,
+        "gemma4.attention.value_length": 512,
+        "gemma4.attention.sliding_window": 1024,
+        "gemma4.attention.sliding_window_pattern": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false
+        ],
+        "gemma4.attention.key_length_swa": 256,
+        "gemma4.attention.value_length_swa": 256
+      },
+      "kvmem": false,
+      "configured_resident_tokens": 32768,
+      "cases": [
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q8_0",
+          "kv_mib": 513.1875,
+          "file_plus_kv_plus_700_mib": 14999.483917236328,
+          "note": "gemma4: 30 层 (5 全注意力在 32768, 25 滑窗在 1024)"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q5_0",
+          "kv_mib": 332.0625,
+          "file_plus_kv_plus_700_mib": 14818.358917236328,
+          "note": "gemma4: 30 层 (5 全注意力在 32768, 25 滑窗在 1024)"
+        },
+        {
+          "resident_tokens": 32768,
+          "kv_type": "q4_0",
+          "kv_mib": 271.6875,
+          "file_plus_kv_plus_700_mib": 14757.983917236328,
+          "note": "gemma4: 30 层 (5 全注意力在 32768, 25 滑窗在 1024)"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q8_0",
+          "kv_mib": 904.1874990463257,
+          "file_plus_kv_plus_700_mib": 15390.483916282654,
+          "note": "gemma4: 30 层 (5 全注意力在 65536, 25 滑窗在 1024)"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q5_0",
+          "kv_mib": 585.0625,
+          "file_plus_kv_plus_700_mib": 15071.358917236328,
+          "note": "gemma4: 30 层 (5 全注意力在 65536, 25 滑窗在 1024)"
+        },
+        {
+          "resident_tokens": 65536,
+          "kv_type": "q4_0",
+          "kv_mib": 478.6874990463257,
+          "file_plus_kv_plus_700_mib": 14964.983916282654,
+          "note": "gemma4: 30 层 (5 全注意力在 65536, 25 滑窗在 1024)"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q8_0",
+          "kv_mib": 1686.1874990463257,
+          "file_plus_kv_plus_700_mib": 16172.483916282654,
+          "note": "gemma4: 30 层 (5 全注意力在 131072, 25 滑窗在 1024)"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q5_0",
+          "kv_mib": 1091.0625,
+          "file_plus_kv_plus_700_mib": 15577.358917236328,
+          "note": "gemma4: 30 层 (5 全注意力在 131072, 25 滑窗在 1024)"
+        },
+        {
+          "resident_tokens": 131072,
+          "kv_type": "q4_0",
+          "kv_mib": 892.6874990463257,
+          "file_plus_kv_plus_700_mib": 15378.983916282654,
+          "note": "gemma4: 30 层 (5 全注意力在 131072, 25 滑窗在 1024)"
+        }
+      ]
+    }
+  ],
+  "workspace_head": "3cf8983b9cb36eb3d3250a845b3dd6c48c085f70"
+}

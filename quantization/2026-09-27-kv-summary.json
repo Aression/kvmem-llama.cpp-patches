@@ -1,0 +1,531 @@
+{
+  "answer_parser": "Exact JSON fields, allowing a single Markdown code fence; raw reports unchanged.",
+  "phase_correction": "Probe cold_request follows calibration, so it is first task after calibration, not a cold inference request.",
+  "limitations": [
+    "Depths are approximate character fractions, not verified template token positions.",
+    "Generated length varies with model EOS; no fixed 200-token decode claim.",
+    "Five patterned facts in repetitive English are a limited recall probe, not general task quality."
+  ],
+  "reports": [
+    {
+      "source": "docs\\experiments\\2026-09-27-q8-9k-v2.json",
+      "source_sha256": "05331907ffb26734e93eb9beabc0a4b8d5cc56234756ff1968daf62818847751",
+      "status": "complete",
+      "server_sha256": "6a911c7830930106516734188b9925248fe9b78d3b99464f9f05922e0dd3424a",
+      "owned_process_stopped": true,
+      "startup_seconds": 16.594000000011874,
+      "samples": [
+        {
+          "iteration": 0,
+          "phase": "cold_request",
+          "hits": {
+            "KEY_0": true,
+            "KEY_1": true,
+            "KEY_2": true,
+            "KEY_3": true,
+            "KEY_4": true
+          },
+          "prompt_tokens": 8998,
+          "completion_tokens": 77,
+          "timings": {
+            "cache_n": 0,
+            "predicted_ms": 2297.1285,
+            "predicted_n": 77,
+            "predicted_per_second": 33.52010999819993,
+            "predicted_per_token_ms": 29.83283766233766,
+            "prompt_ms": 12098.9759,
+            "prompt_n": 8998,
+            "prompt_per_second": 743.6993076414013,
+            "prompt_per_token_ms": 1.3446294621026895
+          },
+          "wall_seconds": 14.46899999998277
+        },
+        {
+          "iteration": 1,
+          "phase": "measured",
+          "hits": {
+            "KEY_0": true,
+            "KEY_1": true,
+            "KEY_2": true,
+            "KEY_3": true,
+            "KEY_4": true
+          },
+          "prompt_tokens": 8998,
+          "completion_tokens": 77,
+          "timings": {
+            "cache_n": 0,
+            "predicted_ms": 2262.8375,
+            "predicted_n": 77,
+            "predicted_per_second": 34.028073160357295,
+            "predicted_per_token_ms": 29.387500000000003,
+            "prompt_ms": 12408.7579,
+            "prompt_n": 8998,
+            "prompt_per_second": 725.1330127087095,
+            "prompt_per_token_ms": 1.3790573349633253
+          },
+          "wall_seconds": 14.76500000001397
+        },
+        {
+          "iteration": 2,
+          "phase": "measured",
+          "hits": {
+            "KEY_0": true,
+            "KEY_1": true,
+            "KEY_2": true,
+            "KEY_3": true,
+            "KEY_4": true
+          },
+          "prompt_tokens": 8998,
+          "completion_tokens": 77,
+          "timings": {
+            "cache_n": 0,
+            "predicted_ms": 2301.9804,
+            "predicted_n": 77,
+            "predicted_per_second": 33.44945943067109,
+            "predicted_per_token_ms": 29.89584935064935,
+            "prompt_ms": 12292.4376,
+            "prompt_n": 8998,
+            "prompt_per_second": 731.9947672542995,
+            "prompt_per_token_ms": 1.3661299844409869
+          },
+          "wall_seconds": 14.671999999991385
+        },
+        {
+          "iteration": 3,
+          "phase": "measured",
+          "hits": {
+            "KEY_0": true,
+            "KEY_1": true,
+            "KEY_2": true,
+            "KEY_3": true,
+            "KEY_4": true
+          },
+          "prompt_tokens": 8998,
+          "completion_tokens": 77,
+          "timings": {
+            "cache_n": 0,
+            "predicted_ms": 2241.5134,
+            "predicted_n": 77,
+            "predicted_per_second": 34.35179107115755,
+            "predicted_per_token_ms": 29.110563636363633,
+            "prompt_ms": 12108.3553,
+            "prompt_n": 8998,
+            "prompt_per_second": 743.1232216979956,
+            "prompt_per_token_ms": 1.3456718492998443
+          },
+          "wall_seconds": 14.422000000020489
+        }
+      ],
+      "statistics_measured": {
+        "prompt_per_second": {
+          "n": 3,
+          "median": 731.9947672542995,
+          "min": 725.1330127087095,
+          "max": 743.1232216979956
+        },
+        "predicted_per_second": {
+          "n": 3,
+          "median": 34.028073160357295,
+          "min": 33.44945943067109,
+          "max": 34.35179107115755
+        }
+      }
+    },
+    {
+      "source": "docs\\experiments\\2026-09-27-q5-9k.json",
+      "source_sha256": "f8b1f90c776845495b9788c9d2f96b2792a2e0915bec639705142b8ced32b877",
+      "status": "complete",
+      "server_sha256": "6a911c7830930106516734188b9925248fe9b78d3b99464f9f05922e0dd3424a",
+      "owned_process_stopped": true,
+      "startup_seconds": 15.078000000008615,
+      "samples": [
+        {
+          "iteration": 0,
+          "phase": "cold_request",
+          "hits": {
+            "KEY_0": true,
+            "KEY_1": true,
+            "KEY_2": true,
+            "KEY_3": true,
+            "KEY_4": true
+          },
+          "prompt_tokens": 8998,
+          "completion_tokens": 77,
+          "timings": {
+            "cache_n": 0,
+            "predicted_ms": 2090.8745,
+            "predicted_n": 77,
+            "predicted_per_second": 36.826696198169714,
+            "predicted_per_token_ms": 27.154214285714286,
+            "prompt_ms": 12232.7501,
+            "prompt_n": 8998,
+            "prompt_per_second": 735.5664038293401,
+            "prompt_per_token_ms": 1.359496565903534
+          },
+          "wall_seconds": 14.39000000001397
+        },
+        {
+          "iteration": 1,
+          "phase": "measured",
+          "hits": {
+            "KEY_0": true,
+            "KEY_1": true,
+            "KEY_2": true,
+            "KEY_3": true,
+            "KEY_4": true
+          },
+          "prompt_tokens": 8998,
+          "completion_tokens": 77,
+          "timings": {
+            "cache_n": 0,
+            "predicted_ms": 2097.1402,
+            "predicted_n": 77,
+            "predicted_per_second": 36.716667774524566,
+            "predicted_per_token_ms": 27.23558701298701,
+            "prompt_ms": 11945.2666,
+            "prompt_n": 8998,
+            "prompt_per_second": 753.2690814954268,
+            "prompt_per_token_ms": 1.327546854856635
+          },
+          "wall_seconds": 14.125
+        },
+        {
+          "iteration": 2,
+          "phase": "measured",
+          "hits": {
+            "KEY_0": true,
+            "KEY_1": true,
+            "KEY_2": true,
+            "KEY_3": true,
+            "KEY_4": true
+          },
+          "prompt_tokens": 8998,
+          "completion_tokens": 77,
+          "timings": {
+            "cache_n": 0,
+            "predicted_ms": 2092.499,
+            "predicted_n": 77,
+            "predicted_per_second": 36.79810599670538,
+            "predicted_per_token_ms": 27.175311688311687,
+            "prompt_ms": 12007.2989,
+            "prompt_n": 8998,
+            "prompt_per_second": 749.3775306951009,
+            "prompt_per_token_ms": 1.334440864636586
+          },
+          "wall_seconds": 14.171999999991385
+        },
+        {
+          "iteration": 3,
+          "phase": "measured",
+          "hits": {
+            "KEY_0": true,
+            "KEY_1": true,
+            "KEY_2": true,
+            "KEY_3": true,
+            "KEY_4": true
+          },
+          "prompt_tokens": 8998,
+          "completion_tokens": 77,
+          "timings": {
+            "cache_n": 0,
+            "predicted_ms": 2121.4534,
+            "predicted_n": 77,
+            "predicted_per_second": 36.29587150017059,
+            "predicted_per_token_ms": 27.551342857142856,
+            "prompt_ms": 12122.7925,
+            "prompt_n": 8998,
+            "prompt_per_second": 742.2382260522895,
+            "prompt_per_token_ms": 1.347276339186486
+          },
+          "wall_seconds": 14.312999999994645
+        }
+      ],
+      "statistics_measured": {
+        "prompt_per_second": {
+          "n": 3,
+          "median": 749.3775306951009,
+          "min": 742.2382260522895,
+          "max": 753.2690814954268
+        },
+        "predicted_per_second": {
+          "n": 3,
+          "median": 36.716667774524566,
+          "min": 36.29587150017059,
+          "max": 36.79810599670538
+        }
+      }
+    },
+    {
+      "source": "docs\\experiments\\2026-09-27-q4-9k.json",
+      "source_sha256": "34da0c84ea8171ef2596f3a0ee3d57bff3674899a7443942d7c425e5cc8ab963",
+      "status": "complete",
+      "server_sha256": "6a911c7830930106516734188b9925248fe9b78d3b99464f9f05922e0dd3424a",
+      "owned_process_stopped": true,
+      "startup_seconds": 10.60899999999674,
+      "samples": [
+        {
+          "iteration": 0,
+          "phase": "cold_request",
+          "hits": {
+            "KEY_0": true,
+            "KEY_1": true,
+            "KEY_2": true,
+            "KEY_3": true,
+            "KEY_4": true
+          },
+          "prompt_tokens": 8998,
+          "completion_tokens": 77,
+          "timings": {
+            "cache_n": 0,
+            "predicted_ms": 2020.794,
+            "predicted_n": 77,
+            "predicted_per_second": 38.10383443339598,
+            "predicted_per_token_ms": 26.244077922077924,
+            "prompt_ms": 12299.2633,
+            "prompt_n": 8998,
+            "prompt_per_second": 731.5885334367953,
+            "prompt_per_token_ms": 1.3668885641253612
+          },
+          "wall_seconds": 14.405999999988126
+        },
+        {
+          "iteration": 1,
+          "phase": "measured",
+          "hits": {
+            "KEY_0": true,
+            "KEY_1": true,
+            "KEY_2": true,
+            "KEY_3": true,
+            "KEY_4": true
+          },
+          "prompt_tokens": 8998,
+          "completion_tokens": 77,
+          "timings": {
+            "cache_n": 0,
+            "predicted_ms": 2025.2604,
+            "predicted_n": 77,
+            "predicted_per_second": 38.019802293077966,
+            "predicted_per_token_ms": 26.302083116883114,
+            "prompt_ms": 12227.5414,
+            "prompt_n": 8998,
+            "prompt_per_second": 735.8797411227739,
+            "prompt_per_token_ms": 1.3589176928206268
+          },
+          "wall_seconds": 14.328000000008615
+        },
+        {
+          "iteration": 2,
+          "phase": "measured",
+          "hits": {
+            "KEY_0": true,
+            "KEY_1": true,
+            "KEY_2": true,
+            "KEY_3": true,
+            "KEY_4": true
+          },
+          "prompt_tokens": 8998,
+          "completion_tokens": 77,
+          "timings": {
+            "cache_n": 0,
+            "predicted_ms": 2000.1191,
+            "predicted_n": 77,
+            "predicted_per_second": 38.49770746152067,
+            "predicted_per_token_ms": 25.975572727272727,
+            "prompt_ms": 12017.1688,
+            "prompt_n": 8998,
+            "prompt_per_second": 748.7620545032205,
+            "prompt_per_token_ms": 1.3355377639475439
+          },
+          "wall_seconds": 14.10999999998603
+        },
+        {
+          "iteration": 3,
+          "phase": "measured",
+          "hits": {
+            "KEY_0": true,
+            "KEY_1": true,
+            "KEY_2": true,
+            "KEY_3": true,
+            "KEY_4": true
+          },
+          "prompt_tokens": 8998,
+          "completion_tokens": 77,
+          "timings": {
+            "cache_n": 0,
+            "predicted_ms": 1996.4746,
+            "predicted_n": 77,
+            "predicted_per_second": 38.56798378501785,
+            "predicted_per_token_ms": 25.92824155844156,
+            "prompt_ms": 12285.0265,
+            "prompt_n": 8998,
+            "prompt_per_second": 732.4363524978966,
+            "prompt_per_token_ms": 1.3653063458546344
+          },
+          "wall_seconds": 14.359000000025844
+        }
+      ],
+      "statistics_measured": {
+        "prompt_per_second": {
+          "n": 3,
+          "median": 735.8797411227739,
+          "min": 732.4363524978966,
+          "max": 748.7620545032205
+        },
+        "predicted_per_second": {
+          "n": 3,
+          "median": 38.49770746152067,
+          "min": 38.019802293077966,
+          "max": 38.56798378501785
+        }
+      }
+    },
+    {
+      "source": "docs\\experiments\\2026-09-27-q8-52k.json",
+      "source_sha256": "d6b7731072ef5338688cca03300577f76e0e0e74f0d8612fa8df3dd277c1f59b",
+      "status": "complete",
+      "server_sha256": "6a911c7830930106516734188b9925248fe9b78d3b99464f9f05922e0dd3424a",
+      "owned_process_stopped": true,
+      "startup_seconds": 12.09399999998277,
+      "samples": [
+        {
+          "iteration": 0,
+          "phase": "cold_request",
+          "hits": {
+            "KEY_0": true,
+            "KEY_1": true,
+            "KEY_2": true,
+            "KEY_3": true,
+            "KEY_4": true
+          },
+          "prompt_tokens": 51359,
+          "completion_tokens": 77,
+          "timings": {
+            "cache_n": 0,
+            "predicted_ms": 10168.1628,
+            "predicted_n": 77,
+            "predicted_per_second": 7.572656094766697,
+            "predicted_per_token_ms": 132.05406233766234,
+            "prompt_ms": 99645.7273,
+            "prompt_n": 51359,
+            "prompt_per_second": 515.4159781018528,
+            "prompt_per_token_ms": 1.9401804415973831
+          },
+          "wall_seconds": 110.125
+        },
+        {
+          "iteration": 1,
+          "phase": "measured",
+          "hits": {
+            "KEY_0": true,
+            "KEY_1": true,
+            "KEY_2": true,
+            "KEY_3": true,
+            "KEY_4": true
+          },
+          "prompt_tokens": 51359,
+          "completion_tokens": 77,
+          "timings": {
+            "cache_n": 0,
+            "predicted_ms": 10047.0244,
+            "predicted_n": 77,
+            "predicted_per_second": 7.663960684717756,
+            "predicted_per_token_ms": 130.48083636363637,
+            "prompt_ms": 101368.7069,
+            "prompt_n": 51359,
+            "prompt_per_second": 506.6553729511962,
+            "prompt_per_token_ms": 1.9737282053778307
+          },
+          "wall_seconds": 111.70299999997951
+        }
+      ],
+      "statistics_measured": {
+        "prompt_per_second": {
+          "n": 1,
+          "median": 506.6553729511962,
+          "min": 506.6553729511962,
+          "max": 506.6553729511962
+        },
+        "predicted_per_second": {
+          "n": 1,
+          "median": 7.663960684717756,
+          "min": 7.663960684717756,
+          "max": 7.663960684717756
+        }
+      }
+    },
+    {
+      "source": "docs\\experiments\\2026-09-27-q5-52k.json",
+      "source_sha256": "896ad07fdb464ac8b3794fa53556b92a6fda2ece5ecffbfa9c5db27818f0fb56",
+      "status": "complete",
+      "server_sha256": "6a911c7830930106516734188b9925248fe9b78d3b99464f9f05922e0dd3424a",
+      "owned_process_stopped": true,
+      "startup_seconds": 10.60899999999674,
+      "samples": [
+        {
+          "iteration": 0,
+          "phase": "cold_request",
+          "hits": {
+            "KEY_0": true,
+            "KEY_1": true,
+            "KEY_2": true,
+            "KEY_3": true,
+            "KEY_4": true
+          },
+          "prompt_tokens": 51359,
+          "completion_tokens": 77,
+          "timings": {
+            "cache_n": 0,
+            "predicted_ms": 3605.679,
+            "predicted_n": 77,
+            "predicted_per_second": 21.355201059217972,
+            "predicted_per_token_ms": 46.827,
+            "prompt_ms": 104364.2123,
+            "prompt_n": 51359,
+            "prompt_per_second": 492.1131379056075,
+            "prompt_per_token_ms": 2.032053044257092
+          },
+          "wall_seconds": 108.31299999999464
+        },
+        {
+          "iteration": 1,
+          "phase": "measured",
+          "hits": {
+            "KEY_0": true,
+            "KEY_1": true,
+            "KEY_2": true,
+            "KEY_3": true,
+            "KEY_4": true
+          },
+          "prompt_tokens": 51359,
+          "completion_tokens": 77,
+          "timings": {
+            "cache_n": 0,
+            "predicted_ms": 3418.1038,
+            "predicted_n": 77,
+            "predicted_per_second": 22.527109913982134,
+            "predicted_per_token_ms": 44.39095844155844,
+            "prompt_ms": 103907.971,
+            "prompt_n": 51359,
+            "prompt_per_second": 494.27391860052774,
+            "prompt_per_token_ms": 2.023169668412547
+          },
+          "wall_seconds": 107.625
+        }
+      ],
+      "statistics_measured": {
+        "prompt_per_second": {
+          "n": 1,
+          "median": 494.27391860052774,
+          "min": 494.27391860052774,
+          "max": 494.27391860052774
+        },
+        "predicted_per_second": {
+          "n": 1,
+          "median": 22.527109913982134,
+          "min": 22.527109913982134,
+          "max": 22.527109913982134
+        }
+      }
+    }
+  ]
+}
